@@ -12,8 +12,8 @@ export class NotificationService {
     try {
       const response = await client.messages.create({
         body: message,
-        from: process.env.TWILIO_WHATSAPP_NUMBER,  // Número tomado del .env
-        to: 'whatsapp:+5219686705919'  // Asegúrate de usar el número correcto aquí
+        from: process.env.TWILIO_WHATSAPP_NUMBER,  
+        to: 'whatsapp:+5219686705919'  
       });
       console.log('Mensaje enviado:', response.sid);
     } catch (error) {
