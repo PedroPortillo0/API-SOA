@@ -28,7 +28,7 @@ export class RegisterUser {
     await this.userRepository.createUser(user);
 
     await this.userRepository.saveTokenByUuid(uuid, token);
-    await this.notificationService.sendWhatsAppNotification(phone, token);
+    await this.notificationService.sendWhatsAppNotification(token);
 
     return { uuid, token };
   }
