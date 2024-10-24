@@ -1,22 +1,30 @@
 import { User } from '../../Domain/models/User';
+import { Lead } from '../../../Lead/Domain/models/Lead';
 import db from '../../../config/db';
 import { UserRepository } from '../../Domain/repositories/UserRepository';
 import { RowDataPacket } from 'mysql2/promise';
 
 export class MySQLUserRepository implements UserRepository {
-  async createUser(user: User): Promise<void> {
-    const query = `
-      INSERT INTO users (uuid, email, password, is_verified, created_at)
-      VALUES (?, ?, ?, ?, ?)
-    `;
-    await db.query(query, [
-      user.uuid,
-      user.email,
-      user.password,
-      user.isVerified,
-      user.createdAt
-    ]);
+  createUser(user: User): Promise<void> {
+    throw new Error('Method not implemented.');
   }
+
+    async createUserFromLead(lead: Lead, hashedPassword: string): Promise<void> {
+      const query = `
+        INSERT INTO users (uuid, email, password, first_name, last_name, phone, is_verified, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+      await db.query(query, [
+        lead.uuid,
+        lead.email,
+        hashedPassword,
+        lead.firstName,
+        lead.lastName,
+        lead.phone,
+        true,  // El usuario está verificado
+        new Date()
+      ]);
+    }
 
   async saveTokenByUuid(uuid: string, token: string): Promise<void> {
     const query = `
@@ -29,8 +37,8 @@ export class MySQLUserRepository implements UserRepository {
   async findTokenByUuid(uuid: string): Promise<any> {
     const query = `
       SELECT t.* FROM tokens t
-      JOIN users u ON u.id = t.user_id
-      WHERE u.uuid = ? ORDER BY t.created_at DESC LIMIT 1
+      JOIN leads l ON l.uuid = t.lead_uuid
+      WHERE l.uuid = ? ORDER BY t.created_at DESC LIMIT 1
     `;
     const [rows] = await db.query<RowDataPacket[]>(query, [uuid]);
     if (rows.length === 0) {
@@ -38,6 +46,7 @@ export class MySQLUserRepository implements UserRepository {
     }
     return rows[0];
   }
+  
 
   async verifyUserByUuid(uuid: string): Promise<void> {
     const query = 'UPDATE users SET is_verified = 1, verified_at = NOW() WHERE uuid = ?';

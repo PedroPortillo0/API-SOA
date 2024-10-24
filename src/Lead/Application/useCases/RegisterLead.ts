@@ -6,17 +6,10 @@ export class RegisterLead {
   constructor(private leadRepository: LeadRepository) {}
 
   async execute(email: string, firstName: string, lastName: string, phone: string) {
-    const uuid = uuidv4();
-    const lead = new Lead(
-      0,             
-      uuid,
-      email,
-      firstName,
-      lastName,
-      phone,
-      new Date()     
-    );
-
-    await this.leadRepository.createLead(lead);
+    const uuid = uuidv4();  // Generar UUID para el lead
+    const lead = new Lead(0, uuid, email, firstName, lastName, phone, new Date());
+    
+    await this.leadRepository.createLead(lead);  // Registrar el lead en la base de datos
   }
 }
+

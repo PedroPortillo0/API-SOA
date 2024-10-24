@@ -6,7 +6,8 @@ export class Lead {
       public firstName: string,
       public lastName: string,
       public phone: string,
-      public createdAt: Date
+      public createdAt: Date,
+      public password?: string
     ) {}
   }
   
