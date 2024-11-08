@@ -11,9 +11,22 @@ class RabbitMQ {
         try {
             this.connection = await amqp.connect(process.env.RABBITMQ_URL as string);
             this.channel = await this.connection.createChannel();
-            await this.channel.assertQueue(process.env.RABBITMQ_QUEUE as string, { durable: true });
 
-            console.log('Conectado a RabbitMQ');
+            // Aseguramos que todas las colas estén declaradas al conectar
+            const queues = [
+                process.env.RABBITMQ_QUEUE_NOTILEAD,
+                process.env.RABBITMQ_QUEUE_PAGOS_USER,
+                process.env.RABBITMQ_QUEUE_TOKEN_USER,
+                process.env.RABBITMQ_QUEUE_TOKEN_VALIDADOR
+            ];
+
+            for (const queue of queues) {
+                if (queue) {
+                    await this.channel.assertQueue(queue, { durable: true });
+                }
+            }
+
+            console.log('Conectado a RabbitMQ y colas aseguradas');
         } catch (error) {
             console.error('Error al conectar a RabbitMQ:', error);
             throw error;

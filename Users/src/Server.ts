@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-// import userRoutes from './Usuario/Infraestructure/Routes/userRoutes';
+import userRoutes from './Usuarios/Infraestructure/Routes/userRouter';
 import leadRoutes from './Lead/Infraestructure/Routes/leadRoutes';
 import { testConnection } from './Config/Db';
 import rabbitMQ from './Config/RabbitMQ';
@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 // Rutas
-// app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/leads', leadRoutes);
 
 // Prueba de conexión a la base de datos

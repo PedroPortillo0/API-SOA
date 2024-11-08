@@ -11,7 +11,7 @@ export default class RabbitMQEventPublisher implements EventPublisher {
         if (!this.channel) {
             const connection = await amqp.connect(process.env.RABBITMQ_URL as string);
             this.channel = await connection.createChannel();
-            await this.channel.assertQueue(process.env.RABBITMQ_QUEUE as string, { durable: true });
+            await this.channel.assertQueue(process.env.RABBITMQ_QUEUE_NOTILEAD as string, { durable: true });
             console.log('Conectado a RabbitMQ');
         }
     }
@@ -22,7 +22,7 @@ export default class RabbitMQEventPublisher implements EventPublisher {
         }
 
         const message = JSON.stringify(event);
-        this.channel!.sendToQueue(process.env.RABBITMQ_QUEUE as string, Buffer.from(message), {
+        this.channel!.sendToQueue(process.env.RABBITMQ_QUEUE_NOTILEAD as string, Buffer.from(message), {
             persistent: true
         });
 
