@@ -1,5 +1,8 @@
 import { Token } from "../Entities/Token";
 
 export interface ITokenRepository {
-  save(token: Token): Promise<void>;
+  create(token: Token): Promise<Token>;
+  findByUserId(userId: string): Promise<Token | null>;
+  verifyToken(userId: string, token: string): Promise<boolean>;
+  markAsUsed(token: string): Promise<void>;
 }
