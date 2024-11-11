@@ -1,41 +1,36 @@
 {
-  "name": "users",
+  "name": "usuarios-microservicio",
   "version": "1.0.0",
-  "description": "apli para la parte de usuarios en la implementacion devops",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/server.ts",
-    "build": "tsc --outDir ./dist",
-    "serve": "node dist/server.js",
-    "start:dev": "ts-node-dev --respawn src/server.ts",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "lint": "eslint ."
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "dev": "tsc-watch --onSuccess \"node --env-file .env --watch ./dist/index.js\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PedroPortillo0/API-SOA.git#version2"
-  },
-  "author": "pedro portillo",
+  "keywords": [],
+  "author": "Pedro portillo",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PedroPortillo0/API-SOA/issues"
-  },
-  "homepage": "https://github.com/PedroPortillo0/API-SOA/tree/version2#readme",
+  "description": "",
   "devDependencies": {
     "@types/amqplib": "^0.10.5",
-    "@types/express": "^4.16.1",
-    "@types/node": "^20.17.6",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/joi": "^17.2.2",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.7.4",
     "@types/pg": "^8.11.10",
-    "tslint": "^5.12.1",
+    "tsc-watch": "^6.2.0",
     "typescript": "^5.6.3"
   },
   "dependencies": {
     "amqplib": "^0.10.4",
-    "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.16.4",
-    "pg": "^8.13.1",
-    "uuid": "^11.0.2"
+    "express": "^4.21.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.0"
   }
 }
