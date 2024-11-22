@@ -6,4 +6,5 @@ export interface IPetRepository {
     delete(id: string): Promise<void>;
     getById(id: string): Promise<Pet | null>;
     getAll(): Promise<Pet[]>;
+    // findByUserId(userId: string): Promise<Pet[]>;
 }

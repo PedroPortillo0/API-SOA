@@ -6,7 +6,7 @@ export class Pet {
         public name: string, // Nombre de la mascota
         public species: string, // Especie (e.g., perro, gato)
         public breed: string, // Raza
-        public birthDate: string, // Fecha de nacimiento (formato: "YYYY-MM-DD")
+        public birth_date: string, // Fecha de nacimiento (formato: "YYYY-MM-DD")
         public weight: number, // Peso en kg
         public height: number, // Altura en cm
         public gender: string, // Género (e.g., macho, hembra)

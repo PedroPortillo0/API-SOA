@@ -1,57 +1,55 @@
-import { createRabbitMQChannel } from "../../_config/rabbitMQT.Config";
-import { PetRepository } from "../percistence/PetRepository";
-import { createPool } from "mysql2/promise";
+import { Channel } from "amqplib";
+import { Pet } from "../../Domain/entities/Pet";
+import { IPetRepository } from "../../Domain/Repositories/IPetRepository";
 
-const pool = createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-});
+export class RabbitMQPetConsumer {
+  constructor(private readonly channel: Channel, private readonly petRepository: IPetRepository) {}
 
-const petRepository = new PetRepository(pool);
+  async startConsuming(): Promise<void> {
+    const queue = "service_pet";
 
-export class RabbitMQConsumer {
-    private channel: any;
+    // Asegurar que la cola existe
+    await this.channel.assertQueue(queue, { durable: true });
 
-    async init() {
-        this.channel = await createRabbitMQChannel();
-    }
-
-    async consumeUserToPetQueue() {
-        const queue = process.env.RABBITMQ_QUEUE_USER_TO_PET!;
-        await this.channel.assertQueue(queue, { durable: true });
-
-        console.log(`✔️ Consumiendo mensajes de la cola "${queue}"`);
-
-        this.channel.consume(queue, async (msg: any) => {
-            if (msg) {
-                const content = JSON.parse(msg.content.toString());
-                console.log("✔️ Mensaje recibido:", content);
-
-                try {
-                    // Crea la mascota en la base de datos
-                    await petRepository.create({
-                        id: content.id,
-                        name: content.name,
-                        species: content.species,
-                        breed: content.breed,
-                        age: content.age,
-                        weight: content.weight,
-                        height: content.height,
-                        gender: content.gender,
-                        vaccines: content.vaccines,
-                        allergies: content.allergies,
-                        sterilized: content.sterilized,
-                        userId: content.userId, // Relación con el usuario
-                    });
-
-                    console.log(`✔️ Mascota creada con éxito: ${content.name}`);
-                    this.channel.ack(msg); // Confirma el mensaje
-                } catch (error) {
-                    console.error("❌ Error al procesar el mensaje:", error);
-                }
+    // Escuchar mensajes en la cola
+    this.channel.consume(queue, async (message) => {
+        if (message) {
+          try {
+            const eventPayload = JSON.parse(message.content.toString());
+            console.log("Payload recibido:", eventPayload);
+      
+            // Validar que los campos no estén vacíos o undefined
+            if (!eventPayload.name || !eventPayload.species || !eventPayload.userId) {
+              throw new Error("Faltan campos obligatorios en el evento.");
             }
-        });
-    }
+      
+            // Crear la nueva mascota
+            const pet = new Pet(
+              undefined, // ID generado automáticamente en la base de datos
+              eventPayload.name,
+              eventPayload.species,
+              eventPayload.breed,
+              eventPayload.birth_date,
+              eventPayload.weight,
+              eventPayload.height,
+              eventPayload.gender,
+              eventPayload.vaccines,
+              eventPayload.allergies,
+              eventPayload.sterilized,
+              eventPayload.userId
+            );
+      
+            // Guardar en la base de datos
+            await this.petRepository.create(pet);
+      
+            // Confirmar el mensaje como procesado
+            this.channel.ack(message);
+          } catch (error) {
+            console.error("Error al procesar el mensaje de RabbitMQ:", error);
+            this.channel.nack(message, false, true); // Re-encolar el mensaje
+          }
+        }
+      });
+      
+  }
 }
