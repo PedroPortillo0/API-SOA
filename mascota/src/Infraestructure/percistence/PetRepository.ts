@@ -7,11 +7,11 @@ export class PetRepository {
     // Crear una nueva mascota
     async create(pet: Pet): Promise<void> {
         const query = `
-            INSERT INTO pets (id, name, species, breed, age, weight, height, gender, vaccines, allergies, sterilized, user_id) 
+            INSERT INTO pets (id, name, species, breed, birth_date, weight, height, gender, vaccines, allergies, sterilized, user_id) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         await this.db.execute(query, [
-            pet.id, pet.name, pet.species, pet.breed, pet.age, pet.weight,
+            pet.id, pet.name, pet.species, pet.breed, pet.birthDate, pet.weight,
             pet.height, pet.gender, pet.vaccines, pet.allergies, pet.sterilized, pet.userId
         ]);
     }
@@ -47,7 +47,7 @@ export class PetRepository {
             row.name,
             row.species,
             row.breed,
-            row.age,
+            row.birth_date,
             row.weight,
             row.height,
             row.gender,
@@ -57,12 +57,10 @@ export class PetRepository {
             row.user_id
         );
     }
-    
 
     // Obtener todas las mascotas
     async getAll(): Promise<Pet[]> {
         const query = `SELECT * FROM pets`;
-    
         const [rows]: [any[], any] = await this.db.execute(query);
     
         return rows.map((row) => new Pet(
@@ -70,23 +68,20 @@ export class PetRepository {
             row.name,
             row.species,
             row.breed,
-            row.age,
+            row.birth_date,
             row.weight,
             row.height,
             row.gender,
-            row.vaccines, 
+            row.vaccines,
             row.allergies,
             row.sterilized,
             row.user_id
         ));
     }
-    
-    
 
     // Obtener todas las mascotas de un usuario específico
     async getAllByUserId(userId: string): Promise<Pet[]> {
         const query = `SELECT * FROM pets WHERE user_id = ?`;
-    
         const [rows]: [any[], any] = await this.db.execute(query, [userId]);
     
         return rows.map((row) => new Pet(
@@ -94,16 +89,14 @@ export class PetRepository {
             row.name,
             row.species,
             row.breed,
-            row.age,
+            row.birth_date,
             row.weight,
             row.height,
             row.gender,
-            row.vaccines, 
+            row.vaccines,
             row.allergies,
             row.sterilized,
             row.user_id
         ));
     }
-    
-    
 }

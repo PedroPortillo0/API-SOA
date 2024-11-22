@@ -3,16 +3,16 @@ import { v4 as uuidv4 } from "uuid";
 export class Pet {
     constructor(
         public id: string = uuidv4(), // Generación de UUID por defecto
-        public name: string,
-        public species: string,
-        public breed: string,
-        public age: number,
-        public weight: number,
-        public height: number,
-        public gender: string,
-        public vaccines: string, // Cambiado a string
-        public allergies: string,
-        public sterilized: boolean,
+        public name: string, // Nombre de la mascota
+        public species: string, // Especie (e.g., perro, gato)
+        public breed: string, // Raza
+        public birthDate: string, // Fecha de nacimiento (formato: "YYYY-MM-DD")
+        public weight: number, // Peso en kg
+        public height: number, // Altura en cm
+        public gender: string, // Género (e.g., macho, hembra)
+        public vaccines: string, // Vacunas (como texto o JSON serializado)
+        public allergies: string, // Alergias
+        public sterilized: boolean, // Indica si está esterilizado/a
         public userId: string // Relación con el usuario propietario
     ) {}
 }
