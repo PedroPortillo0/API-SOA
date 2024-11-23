@@ -36,7 +36,9 @@ export class RabbitMQPetConsumer {
               eventPayload.vaccines,
               eventPayload.allergies,
               eventPayload.sterilized,
-              eventPayload.userId
+              eventPayload.userId,
+              eventPayload.imageUrl // Guardar la URL de la imagen
+
             );
       
             // Guardar en la base de datos

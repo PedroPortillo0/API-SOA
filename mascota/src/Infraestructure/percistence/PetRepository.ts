@@ -7,12 +7,12 @@ export class PetRepository {
     // Crear una nueva mascota
     async create(pet: Pet): Promise<void> {
         const query = `
-            INSERT INTO pets (id, name, species, breed, birth_date, weight, height, gender, vaccines, allergies, sterilized, user_id) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO pets (id, name, species, breed, birth_date, weight, height, gender, vaccines, allergies, sterilized, user_id, image_url) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
         await this.db.execute(query, [
             pet.id, pet.name, pet.species, pet.breed, pet.birth_date, pet.weight,
-            pet.height, pet.gender, pet.vaccines, pet.allergies, pet.sterilized, pet.userId
+            pet.height, pet.gender, pet.vaccines, pet.allergies, pet.sterilized, pet.userId, pet.imageUrl
         ]);
     }
 
@@ -54,7 +54,8 @@ export class PetRepository {
             row.vaccines,
             row.allergies,
             row.sterilized,
-            row.user_id
+            row.user_id,
+            row.image_url
         );
     }
 
@@ -75,7 +76,9 @@ export class PetRepository {
             row.vaccines,
             row.allergies,
             row.sterilized,
-            row.user_id
+            row.user_id,
+            row.image_url
+
         ));
     }
 
@@ -96,7 +99,9 @@ export class PetRepository {
             row.vaccines,
             row.allergies,
             row.sterilized,
-            row.user_id
+            row.user_id,
+            row.image_url
+
         ));
     }
 }

@@ -13,6 +13,8 @@ export class Pet {
         public vaccines: string, // Vacunas (como texto o JSON serializado)
         public allergies: string, // Alergias
         public sterilized: boolean, // Indica si está esterilizado/a
-        public userId: string // Relación con el usuario propietario
+        public userId: string, // Relación con el usuario propietario
+        public imageUrl: string // Nueva propiedad para la URL de la imagen
+
     ) {}
 }
