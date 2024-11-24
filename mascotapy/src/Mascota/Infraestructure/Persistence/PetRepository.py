@@ -30,6 +30,23 @@ class PetRepository:
         finally:
             connection.close()
 
+    def exists(self, pet_id: str) -> bool:
+        """
+        Verifica si una mascota con el ID dado existe en la base de datos.
+        """
+        query = "SELECT COUNT(*) AS count FROM pets WHERE id = %s"
+        connection = self.db_pool.get_connection()
+        try:
+            with connection.cursor(dictionary=True) as cursor:
+                cursor.execute(query, (pet_id,))
+                result = cursor.fetchone()
+                return result["count"] > 0
+        except Exception as e:
+            print(f"Error al verificar si la mascota existe: {e}")
+            return False
+        finally:
+            connection.close()
+
     def update(self, pet_id: str, pet_data: dict) -> None:
         """
         Actualiza una mascota por su ID.
@@ -137,7 +154,6 @@ class PetRepository:
                 cursor.execute(query, (name,))
                 rows = cursor.fetchall()
 
-            # Mapea los resultados a objetos Pet
             return [
                 Pet(
                     id=row["id"],
