@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import pooling
 
-# Cargar las variables del archivo .env
 load_dotenv()
 
 def connect_to_database():
