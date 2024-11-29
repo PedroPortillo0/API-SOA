@@ -94,4 +94,27 @@ export class PostgresUserRepository implements UserRepository {
     const query = `DELETE FROM users WHERE id = $1`;
     await this.pool.query(query, [id]);
   }
+
+  async update(id: string, user: Partial<User>): Promise<void> {
+    const query = `
+      UPDATE users
+      SET 
+        username = COALESCE($2, username),
+        password = COALESCE($3, password),
+        contact_id = COALESCE($4, contact_id),
+        verified = COALESCE($5, verified)
+      WHERE id = $1
+    `;
+    
+    const values = [
+      id,
+      user.getUsername ? user.getUsername() : null,
+      user.getPassword ? user.getPassword() : null,
+      user.getContact ? user.getContact().getId() : null,
+      user.getVerificationDate ? user.getVerificationDate() : null,
+    ];
+  
+    await this.pool.query(query, values);
+  }
+  
 }

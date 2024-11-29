@@ -5,6 +5,7 @@ import {
   findUserByUsernameController,
   findUserByEmailController,
   deleteUserByIdController,
+  updateUserController,
 } from "../dependencyInjection";
 
 const userRoutes = Router();
@@ -25,6 +26,10 @@ userRoutes.get(
 userRoutes.delete(
   "/id/:id",
   deleteUserByIdController.handle.bind(deleteUserByIdController)
+);
+userRoutes.put(
+  "/update/password/:id",
+  updateUserController.handle.bind(updateUserController)
 );
 
 export { userRoutes };

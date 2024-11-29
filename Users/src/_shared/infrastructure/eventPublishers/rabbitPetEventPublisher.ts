@@ -19,6 +19,7 @@ export async function rabbitPetEventPublisher(event: PetEvent): Promise<void> {
         allergies: event.allergies,
         sterilized: event.sterilized,
         userId: event.userId,
+        imageUrl: event.imageUrl, // <-- Asegúrate de incluirlo aquí
     };
 
     // Configurar la cola
