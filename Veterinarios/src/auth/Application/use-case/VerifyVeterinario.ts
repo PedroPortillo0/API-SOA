@@ -1,6 +1,6 @@
-import { VeterinarioRepository } from "../../../Veterinario/Domain/Repositories/VeterinarioRepository"; 
-import { ContactVeterinarioRepository } from "../../../ContacVeterinario/Domain/Repositories/ContactVeterinarioRepository";  
-import { NotificationEvent } from "../../../_shared/Domain/events/NotificationEvent"; 
+import { VeterinarioRepository } from "../../../Veterinario/Domain/Repositories/VeterinarioRepository";
+import { ContactVeterinarioRepository } from "../../../ContacVeterinario/Domain/Repositories/ContactVeterinarioRepository";
+import { NotificationEvent } from "../../../_shared/Domain/events/NotificationEvent";
 
 export class VerifyVeterinario {
   constructor(
@@ -15,27 +15,30 @@ export class VerifyVeterinario {
       throw new Error("Veterinario no encontrado");
     }
 
-    user.verifyUser();
-
     const contact = user.getContact();
-    contact.promoteToUser();
 
-    await this.iVeterinarioRepository.save(user);
-    await this.contactVeterinarioRepository.save(contact);
+    try {
+      contact.promoteToUser();
+      await this.contactVeterinarioRepository.save(contact);
 
-    const message =
-      "¡Bienvenido Estamos validando su CEDULA, esto puede tardar...";
+      user.verifyUser();
+      await this.iVeterinarioRepository.save(user);
 
-    const welcomeEvent = new NotificationEvent(
-      user.getId(),
-      "User",
-      user.getEmail(),
-      user.getPhone(),
-      message,
-      "EMAIL",
-      "NORMAL"
-    );
-
-    await this.eventPublisher(welcomeEvent);
+      const message =
+        "¡Bienvenido Estamos validando su CEDULA, esto puede tardar...";
+      const welcomeEvent = new NotificationEvent(
+        user.getId(),
+        "User",
+        user.getEmail(),
+        user.getPhone(),
+        message,
+        "EMAIL",
+        "NORMAL"
+      );
+      await this.eventPublisher(welcomeEvent);
+    } catch (error) {
+      console.error("Error en la verificación:", error);
+      throw error;
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { Pool, RowDataPacket } from "mysql2/promise";
 import { Veterinario } from "../../Domain/Entities/Veterinario";
 import { VeterinarioRepository } from "../../Domain/Repositories/VeterinarioRepository";
-import { ContactVeterinario } from "../../../ContacVeterinario/Domain/Entities/ContacVeterinario"; 
+import { ContactVeterinario } from "../../../ContacVeterinario/Domain/Entities/ContacVeterinario";
 
 export class MysqlUserRepository implements VeterinarioRepository {
   constructor(private pool: Pool) {}
@@ -15,22 +15,29 @@ export class MysqlUserRepository implements VeterinarioRepository {
       row.phone,
       row.ubication,
       row.status,
-      row.contact_id // Asegúrate de que el campo coincida con el nombre real
+      row.contactveterinario_id
     );
-    return new Veterinario(row.username, row.password, row.ubication, contact, row.id, row.verified);
+    return new Veterinario(
+      row.image_url,
+      row.password,
+      row.cedulaVerified,
+      contact,
+      row.id,
+      row.verified
+    );
   }
 
   // Método para guardar un Veterinario
   async save(veterinario: Veterinario): Promise<void> {
     const query = `
-      INSERT INTO veterinarios (id, image_url, password, cedulaVerified, contactveterinario_id, verified)
-      VALUES (?, ?, ?, ?, ?, ?)
-      ON DUPLICATE KEY UPDATE
-        image_url = VALUES(image_url),
-        password = VALUES(password),
-        cedulaVerified = VALUES(cedulaVerified),
-        contactveterinario_id = VALUES(contactveterinario_id),
-        verified = VALUES(verified);
+        INSERT INTO veterinarios (id, image_url, password, cedulaVerified, contactveterinario_id, verified)
+        VALUES (?, ?, ?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+            image_url = VALUES(image_url),
+            password = VALUES(password),
+            cedulaVerified = VALUES(cedulaVerified),
+            contactveterinario_id = VALUES(contactveterinario_id),
+            verified = VALUES(verified);
     `;
 
     const values = [
@@ -38,13 +45,9 @@ export class MysqlUserRepository implements VeterinarioRepository {
       veterinario.getImage() || null,
       veterinario.getPassword() || null,
       veterinario.getCedula() || null,
-      veterinario.getContact().getId() || null,
+      veterinario.getContact().getId(),
       veterinario.getVerificationDate() || null,
     ];
-
-    if (values.some(value => value === undefined)) {
-      throw new Error("Uno o más valores son undefined");
-    }
 
     await this.pool.execute(query, values);
   }
@@ -63,10 +66,10 @@ export class MysqlUserRepository implements VeterinarioRepository {
   // Método para encontrar un veterinario por ID
   async findById(id: string): Promise<Veterinario | null> {
     const query = `
-      SELECT v.*, c.first_name, c.last_name, c.email, c.phone, c.ubication, c.status
-      FROM veterinarios v
-      JOIN contactveterinario c ON v.contactveterinario_id = c.id
-      WHERE v.id = ?
+        SELECT v.*, c.first_name, c.last_name, c.email, c.phone, c.ubication, c.status
+        FROM veterinarios v
+        LEFT JOIN contactveterinario c ON v.contactveterinario_id = c.id
+        WHERE v.id = ?
     `;
     const [rows] = await this.pool.execute(query, [id]);
     const row = (rows as RowDataPacket[])[0];
@@ -99,19 +102,19 @@ export class MysqlUserRepository implements VeterinarioRepository {
 
     // Comprobamos qué campos existen en veterinario y los añadimos a la consulta
     if (veterinario.getImage?.()) {
-      queryParts.push('image_url = ?');
+      queryParts.push("image_url = ?");
       values.push(veterinario.getImage?.());
     }
     if (veterinario.getPassword?.()) {
-      queryParts.push('password = ?');
+      queryParts.push("password = ?");
       values.push(veterinario.getPassword?.());
     }
     if (veterinario.getCedula?.()) {
-      queryParts.push('cedulaVerified = ?');
+      queryParts.push("cedulaVerified = ?");
       values.push(veterinario.getCedula?.());
     }
     if (veterinario.getVerificationDate?.()) {
-      queryParts.push('verified = ?');
+      queryParts.push("verified = ?");
       values.push(veterinario.getVerificationDate?.());
     }
 
@@ -124,7 +127,7 @@ export class MysqlUserRepository implements VeterinarioRepository {
 
     const query = `
       UPDATE veterinarios
-      SET ${queryParts.join(', ')}
+      SET ${queryParts.join(", ")}
       WHERE id = ?
     `;
 
