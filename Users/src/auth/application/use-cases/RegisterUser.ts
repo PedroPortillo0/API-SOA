@@ -27,10 +27,11 @@ export class RegisterUser {
 
     const hashedPassword = await this.hashService.hash(password);
     const user = new User(username, hashedPassword, contact);
+    
     await this.userRepository.save(user);
 
     const message =
-      "¡Bienvenido! Aquí está su código de verificación para activar su cuenta.";
+      "¡Bienvenido! Aquí está su código de verificación para activar su cuenta";
 
     const event = new NotificationEvent(
       user.getId(),

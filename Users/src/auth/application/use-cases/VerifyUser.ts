@@ -24,7 +24,7 @@ export class VerifyUser {
     await this.contactRepository.save(contact);
 
     const message =
-      "¡Bienvenido a nuestra plataforma! Su registro está completo.";
+      "¡Bienvenido!";
 
     const welcomeEvent = new NotificationEvent(
       user.getId(),

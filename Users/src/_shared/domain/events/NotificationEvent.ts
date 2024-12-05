@@ -9,3 +9,4 @@ export class NotificationEvent {
     public readonly type: "NORMAL" | "2FA"
   ) {}
 }
+

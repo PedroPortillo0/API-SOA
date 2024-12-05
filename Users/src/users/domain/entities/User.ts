@@ -1,12 +1,15 @@
 import { Contact } from "../../../contacts/domain/entities/Contact";
 
 export class User {
+  clearVerification() {
+      throw new Error("Method not implemented.");
+  }
   private id: string;
   private username: string;
   private password: string;
   private contact: Contact;
   private verified: Date | null;
-
+  
   constructor(
     username: string,
     password: string,
@@ -63,5 +66,9 @@ export class User {
 
   getVerificationDate(): Date | null {
     return this.verified;
+  }
+
+  updatePassword(newHashedPassword: string): void {
+    this.password = newHashedPassword;
   }
 }
