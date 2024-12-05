@@ -18,7 +18,6 @@ export class RegisterPet {
       weight: number;
       height: number;
       gender: string;
-      vaccines: string;
       allergies: string;
       sterilized: boolean;
       imageFile: Buffer; // Archivo de imagen en formato Buffer
@@ -46,7 +45,6 @@ export class RegisterPet {
       petData.weight,
       petData.height,
       petData.gender,
-      petData.vaccines,
       petData.allergies,
       petData.sterilized,
       userId,

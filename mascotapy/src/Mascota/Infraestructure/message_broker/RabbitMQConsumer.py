@@ -46,7 +46,6 @@ class RabbitMQPetConsumer:
                         weight=float(event_payload.get("weight", 0.0)),  # Convertir weight a float, con valor por defecto 0.0 si no existe
                         height=float(event_payload.get("height", 0.0)),  # Convertir height a float, con valor por defecto 0.0 si no existe
                         gender=event_payload.get("gender"),
-                        vaccines=event_payload.get("vaccines"),
                         allergies=event_payload.get("allergies"),
                         sterilized=event_payload.get("sterilized") == 'true',  # Convertir a booleano
                         user_id=event_payload.get("userId"),  # Asegúrate de que el campo userId esté presente

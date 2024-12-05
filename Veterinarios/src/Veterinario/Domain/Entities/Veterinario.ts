@@ -2,16 +2,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { ContactVeterinario } from "../../../ContacVeterinario/Domain/Entities/ContacVeterinario";  
 
 export class Veterinario {
-  clearVerification() {
-    throw new Error("Method not implemented.");
-  }
   private id: string;
   private image_url: string;
   private password: string;
   private cedulaVerified: "NoVerificado" | "Verificado";
   private contact: ContactVeterinario;
   private verified: Date | null;
-  
+
   constructor(
     image_url: string,
     password: string,
@@ -78,5 +75,10 @@ export class Veterinario {
 
   getCedula(): string {
     return this.cedulaVerified;
+  }
+
+  verificarCedula(): boolean {
+    this.cedulaVerified = "Verificado";
+    return true;
   }
 }

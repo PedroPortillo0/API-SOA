@@ -12,6 +12,7 @@ export class MysqlUserRepository implements VeterinarioRepository {
       row.first_name,
       row.last_name,
       row.email,
+      
       row.phone,
       row.ubication,
       row.status,

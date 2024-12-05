@@ -15,12 +15,12 @@ class PetRepository:
         Crea una nueva mascota en la base de datos.
         """
         query = """
-            INSERT INTO pets (id, nombre, species, breed, birth_date, weight, height, gender, vaccines, allergies, sterilized, user_id, image_url)
+            INSERT INTO pets (id, nombre, species, breed, birth_date, weight, height, gender, allergies, sterilized, user_id, image_url)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         values = (
             pet.id, pet.name, pet.species, pet.breed, pet.birth_date, pet.weight,
-            pet.height, pet.gender, pet.vaccines, pet.allergies, pet.sterilized, pet.user_id, pet.image_url
+            pet.height, pet.gender, pet.allergies, pet.sterilized, pet.user_id, pet.image_url
         )
         connection = self.db_pool.get_connection()
         try:
@@ -102,7 +102,6 @@ class PetRepository:
                 weight=row["weight"],
                 height=row["height"],
                 gender=row["gender"],
-                vaccines=row["vaccines"],
                 allergies=row["allergies"],
                 sterilized=row["sterilized"],
                 user_id=row["user_id"],
@@ -132,7 +131,6 @@ class PetRepository:
                     weight=row["weight"],
                     height=row["height"],
                     gender=row["gender"],
-                    vaccines=row["vaccines"],
                     allergies=row["allergies"],
                     sterilized=row["sterilized"],
                     user_id=row["user_id"],
@@ -164,7 +162,6 @@ class PetRepository:
                     weight=row["weight"],
                     height=row["height"],
                     gender=row["gender"],
-                    vaccines=row["vaccines"],
                     allergies=row["allergies"],
                     sterilized=row["sterilized"],
                     user_id=row["user_id"],

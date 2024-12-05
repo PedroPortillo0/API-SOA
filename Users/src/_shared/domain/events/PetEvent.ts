@@ -10,7 +10,6 @@ export class PetEvent {
     public weight: number, // Peso en kg
     public height: number, // Altura en cm
     public gender: string, // Género (e.g., macho, hembra)
-    public vaccines: string, // Vacunas (como texto o JSON serializado)
     public allergies: string, // Alergias
     public sterilized: boolean, // Indica si está esterilizado/a
     public userId: string, // Relación con el usuario propietario

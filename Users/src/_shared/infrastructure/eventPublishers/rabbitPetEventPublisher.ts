@@ -15,7 +15,6 @@ export async function rabbitPetEventPublisher(event: PetEvent): Promise<void> {
         weight: event.weight,
         height: event.height,
         gender: event.gender,
-        vaccines: event.vaccines,
         allergies: event.allergies,
         sterilized: event.sterilized,
         userId: event.userId,

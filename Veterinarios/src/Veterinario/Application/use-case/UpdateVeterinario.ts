@@ -1,13 +1,12 @@
-import { Veterinario } from "../../Domain/Entities/Veterinario"; 
 import { VeterinarioRepository } from "../../Domain/Repositories/VeterinarioRepository"; 
 
 export class UpdateVeterinario {
   constructor(private veterinarioRepository: VeterinarioRepository) {}
 
-  async execute(id: string, updatedData: Partial<Veterinario>): Promise<void> {
+  async execute(id: string, updatedData: { cedulaVerified?: "NoVerificado" | "Verificado"; password?: string }): Promise<void> {
     // Verifica que el id sea válido (por ejemplo, si es un UUID)
     if (!this.isValidId(id)) {
-      throw new Error("Invalid ID format");
+      throw new Error("Formato de ID inválido");
     }
 
     // Buscar al veterinario por id
@@ -17,7 +16,15 @@ export class UpdateVeterinario {
     }
 
     // Actualizar los datos del veterinario
-    await this.veterinarioRepository.update(id, updatedData);
+    if (updatedData.cedulaVerified) {
+      user.verificarCedula();
+    }
+
+    if (updatedData.password) {
+      user.updatePassword(updatedData.password);
+    }
+
+    await this.veterinarioRepository.update(id, user);
   }
 
   // Método para verificar si el id es válido (por ejemplo, un UUID)

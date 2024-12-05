@@ -26,8 +26,8 @@ VeterinarioRoutes.delete(
   deleteVeterinarioByIdController.handle.bind(deleteVeterinarioByIdController)
 );
 
-VeterinarioRoutes.put(
-  "/update/password/:id",
+VeterinarioRoutes.patch(
+  "/:id",
   updateVeterinarioController.handle.bind(updateVeterinarioController)
 );
 
