@@ -13,16 +13,24 @@ class CreateVacunacionController:
         try:
             # Obtener los datos del request
             data = request.get_json()
-            id_mascota = data['id_mascota']
-            fecha_vacunacion = data['fecha_vacunacion']
-            vacuna = data['vacuna']
-            lote = data['lote']
+            if not data:
+                return jsonify({'error': 'No se proporcionaron datos'}), 400
+
+            id_mascota = data.get('id_mascota')
+            fecha_vacunacion = data.get('fecha_vacunacion')
+            vacuna = data.get('vacuna')
+            lote = data.get('lote')
+
+            # Validar que todos los campos requeridos estén presentes
+            if not all([id_mascota, fecha_vacunacion, vacuna, lote]):
+                return jsonify({'error': 'Faltan campos requeridos'}), 400
 
             # Ejecutar el caso de uso
             self.create_vacunacion_use_case.execute(id_mascota, fecha_vacunacion, vacuna, lote)
 
             # Responder con éxito
             return jsonify({'message': 'Vacunación creada exitosamente'}), 201
+
         except KeyError as e:
             logging.error(f'Falta el campo requerido: {str(e)}')
             return jsonify({'error': f'Falta el campo requerido: {str(e)}'}), 400

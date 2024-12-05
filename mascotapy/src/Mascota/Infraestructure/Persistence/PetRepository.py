@@ -16,7 +16,7 @@ class PetRepository:
         """
         query = """
             INSERT INTO pets (id, nombre, species, breed, birth_date, weight, height, gender, allergies, sterilized, user_id, image_url)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
         values = (
             pet.id, pet.name, pet.species, pet.breed, pet.birth_date, pet.weight,

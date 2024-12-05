@@ -14,10 +14,10 @@ import { MysqlCitasMascotasRepository } from "./Persistence/MysqlCitasMascotasRe
 
 const mysqlCitasMascotasRepository = new MysqlCitasMascotasRepository(pool);
 
-const saveCitasMascotas = new SaveCitasMascotas();
-const findAllCitasMascotas = new FindAllCitasMascotas();
-const findCitasMascotasById = new FindCitasMascotasById();
-const updateCitasMascotas = new UpdateCitasMascotas();
+const saveCitasMascotas = new SaveCitasMascotas(mysqlCitasMascotasRepository);
+const findAllCitasMascotas = new FindAllCitasMascotas(mysqlCitasMascotasRepository);
+const findCitasMascotasById = new FindCitasMascotasById(mysqlCitasMascotasRepository);
+const updateCitasMascotas = new UpdateCitasMascotas(mysqlCitasMascotasRepository);
 
 const saveCitasMascotaController = new SaveCitasMascotaController(saveCitasMascotas);
 const findAllCitasMascotasController = new FindAllCitasMascotasController(findAllCitasMascotas);
@@ -25,7 +25,6 @@ const findCitasMascotaByIdController = new FindCitasMascotaByIdController(findCi
 const updateCitasMascotasController = new UpdateCitasMascotasController(updateCitasMascotas);
 
 export {
-    mysqlCitasMascotasRepository,
     saveCitasMascotaController,
     findAllCitasMascotasController,
     findCitasMascotaByIdController,

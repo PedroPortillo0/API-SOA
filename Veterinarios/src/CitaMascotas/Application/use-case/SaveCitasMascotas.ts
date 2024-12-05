@@ -1,26 +1,16 @@
-import { CitasMascotas } from "../../Domain/Entities/CitasMascotas"; 
-import { SolicitudesRepository } from "../../Domain/Repository/CitasMascotasRepository"; 
+import { CitasMascotas } from "../../Domain/Entities/CitasMascotas";
+import { SolicitudesRepository } from "../../Domain/Repository/CitasMascotasRepository";
 
-export class SaveCitasMascotas implements SolicitudesRepository {
-    private citas: CitasMascotas[] = [];
+export class SaveCitasMascotas {
+    constructor(private citasMascotasRepository: SolicitudesRepository) {}
 
     async save(cita: CitasMascotas): Promise<void> {
-        this.citas.push(cita);
-    }
-
-    async findAll(): Promise<CitasMascotas[]> {
-        return this.citas;
-    }
-
-    async findById(id: string): Promise<CitasMascotas | null> {
-        const cita = this.citas.find(c => c.getId() === id);
-        return cita || null;
-    }
-
-    async update(id: string, citaActualizada: CitasMascotas): Promise<void> {
-        const index = this.citas.findIndex(c => c.getId() === id);
-        if (index !== -1) {
-            this.citas[index] = citaActualizada;
+        try {
+            await this.citasMascotasRepository.save(cita);
+            console.log('Cita guardada exitosamente:', cita);
+        } catch (error) {
+            console.error('Error al guardar la cita:', error);
+            throw error;
         }
     }
 }

@@ -10,7 +10,7 @@ export class FindCitasMascotaByIdController {
         try {
             const cita = await this.findCitasMascotasById.findById(id);
             if (cita) {
-                return res.status(200).json(cita);
+                return res.status(201).json(cita);
             } else {
                 return res.status(404).json({ message: 'Cita no encontrada' });
             }

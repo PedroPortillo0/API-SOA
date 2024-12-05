@@ -7,7 +7,7 @@ export class UpdateCitasMascotasController {
 
     async handle(req: Request, res: Response): Promise<Response> {
         const { id } = req.params;
-        const { nombreDeLaMascota, mascotaId, motivoCita, fechaCita, comentario } = req.body;
+        const { nombreDeLaMascota, mascotaId, motivoCita, fechaCita, horaCita, comentario } = req.body;
 
         try {
             const citaExistente = await this.updateCitasMascotas.findById(id);
@@ -20,11 +20,12 @@ export class UpdateCitasMascotasController {
                 mascotaId,
                 motivoCita,
                 fechaCita,
+                horaCita,
                 comentario
             );
-            citaActualizada.setId(id); // Mantener el mismo ID
+            citaActualizada.setId(id);
 
-            await this.updateCitasMascotas.update(id, citaActualizada);
+            await this.updateCitasMascotas.update(citaActualizada);
             return res.status(200).json({ message: 'Cita actualizada exitosamente' });
         } catch (error) {
             return res.status(500).json({ message: 'Error al actualizar la cita', error });

@@ -1,19 +1,20 @@
 import { v4 as uuidv4 } from 'uuid';
 
-
 export class CitasMascotas {
     private id: string;
     private nombreDeLaMascota: string;
     private mascotaId: string;
     private motivoCita: string;
-    private fechaCita: string;
+    private fechaCita: Date;
+    private horaCita: string;
     private comentario: string;
 
     constructor(
         nombreDeLaMascota: string,
         mascotaId: string,
         motivoCita: string,
-        fechaCita: string,
+        fechaCita: Date,
+        horaCita: string,
         comentario: string
     ) {
         this.id = uuidv4();
@@ -21,6 +22,7 @@ export class CitasMascotas {
         this.mascotaId = mascotaId;
         this.motivoCita = motivoCita;
         this.fechaCita = fechaCita;
+        this.horaCita = horaCita;
         this.comentario = comentario;
     }
 
@@ -40,8 +42,12 @@ export class CitasMascotas {
         return this.motivoCita;
     }
 
-    public getFechaCita(): string {
+    public getFechaCita(): Date {
         return this.fechaCita;
+    }
+
+    public getHoraCita(): string {
+        return this.horaCita;
     }
 
     public getComentario(): string {
@@ -64,12 +70,15 @@ export class CitasMascotas {
         this.motivoCita = motivoCita;
     }
 
-    public setFechaCita(fechaCita: string): void {
+    public setFechaCita(fechaCita: Date): void {
         this.fechaCita = fechaCita;
+    }
+
+    public setHoraCita(horaCita: string): void {
+        this.horaCita = horaCita;
     }
 
     public setComentario(comentario: string): void {
         this.comentario = comentario;
     }
-
 }

@@ -1,26 +1,14 @@
-import { CitasMascotas } from "../../Domain/Entities/CitasMascotas"; 
-import { SolicitudesRepository } from "../../Domain/Repository/CitasMascotasRepository"; 
+import { CitasMascotas } from "../../Domain/Entities/CitasMascotas";
+import { SolicitudesRepository } from "../../Domain/Repository/CitasMascotasRepository";
 
-export class UpdateCitasMascotas implements SolicitudesRepository {
-    private citas: CitasMascotas[] = [];
+export class UpdateCitasMascotas {
+    constructor(private citasMascotasRepository: SolicitudesRepository) {}
 
-    async save(cita: CitasMascotas): Promise<void> {
-        this.citas.push(cita);
-    }
-
-    async findAll(): Promise<CitasMascotas[]> {
-        return this.citas;
+    async update(cita: CitasMascotas): Promise<void> {
+        await this.citasMascotasRepository.update(cita.getId(), cita);
     }
 
     async findById(id: string): Promise<CitasMascotas | null> {
-        const cita = this.citas.find(c => c.getId() === id);
-        return cita || null;
-    }
-
-    async update(id: string, citaActualizada: CitasMascotas): Promise<void> {
-        const index = this.citas.findIndex(c => c.getId() === id);
-        if (index !== -1) {
-            this.citas[index] = citaActualizada;
-        }
+        return await this.citasMascotasRepository.findById(id);
     }
 }

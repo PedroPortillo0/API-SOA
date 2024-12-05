@@ -11,7 +11,7 @@ vacunacion_routes = Blueprint("vacunacion_routes", __name__)
 # Rutas
 @vacunacion_routes.route("/", methods=["POST"])
 def create_vacunacion():
-    return create_vacunacion_controller.handle(request)
+    return create_vacunacion_controller.handle()
 
 @vacunacion_routes.route("/", methods=["GET"])
 def get_all_vacunaciones():
@@ -20,4 +20,3 @@ def get_all_vacunaciones():
 @vacunacion_routes.route("/<string:id>", methods=["GET"])
 def get_vacunacion_by_id(id):
     return find_vacunacion_by_id_controller.handle(id)
-
