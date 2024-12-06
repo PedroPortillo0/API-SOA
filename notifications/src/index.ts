@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import { env } from "./_config/env.config";
-import { connect } from "./_helpers/odmConnection";
+import { connectWithRetry } from "./_helpers/odmConnection";
 import { initializeConsumers } from "./notifications/infrastructure/dependencyInjection";
 import { tokenRoutes } from "./tokens/infrastructure/routes/tokenRoutes";
 
@@ -13,9 +13,22 @@ app.use(express.json());
 
 app.use("/api/v1/notifications", tokenRoutes);
 
-connect(() => {
-  initializeConsumers();
-  app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-  });
-});
+async function startServer() {
+  try {
+    await connectWithRetry(5, 10000);
+    console.log("Conexión a la base de datos establecida ✅");
+
+    console.log("Iniciando consumidores...");
+    await initializeConsumers(5, 2000); 
+    console.log("Consumidores inicializados correctamente ✅");
+
+    app.listen(port, () => {
+      console.log(`Servidor corriendo en http://localhost:${port} 🚀`);
+    });
+  } catch (error) {
+    console.error("Error al iniciar el servidor:", error);
+    process.exit(1); 
+  }
+}
+
+startServer();

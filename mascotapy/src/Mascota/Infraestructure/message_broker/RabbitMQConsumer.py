@@ -4,6 +4,7 @@ from Mascota.Domain.Entities.Pet import Pet
 from Mascota.Domain.Repositories.IPetRepository import IPetRepository
 
 
+
 class RabbitMQPetConsumer:
     def __init__(self, channel: pika.adapters.blocking_connection.BlockingChannel, pet_repository: IPetRepository):
         """
