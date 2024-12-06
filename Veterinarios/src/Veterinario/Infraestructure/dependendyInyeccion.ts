@@ -6,11 +6,10 @@ import { FindVeterinarioByEmail } from "../Application/use-case/FindVeterinarioB
 import { DeleteVeterinarioById } from "../Application/use-case/DeleteVeterinario"; 
 import { UpdateVeterinario } from "../Application/use-case/UpdateVeterinario";
 
-
 import { FindAllVeterinarioController } from "./Controllers/FindAllVeterinarioController"; 
 import { FindVeterinarioByIdController } from "./Controllers/FindVeterinarioByIdController"; 
 import { FindVeterinarioByEmailController } from "./Controllers/FindVeterinarioByEmailController"; 
-import { DeleteVeterinarioByIdController } from "./Controllers/DeteleVeterinarioController"; 
+import { DeleteVeterinarioByIdController } from "./Controllers/DeleteVeterinarioController"; 
 import { UpdateVeterinarioController } from "./Controllers/UpdateVeterinarioController"; 
 
 import { MysqlUserRepository } from "./Persistence/MysqlVeterinarioRepository";
@@ -26,15 +25,14 @@ const deleteVeterinarioById = new DeleteVeterinarioById(mysqlUserRepository);
 const findAllVeterinarioController = new FindAllVeterinarioController(findAllVeterinario);
 const findVeterinarioByIdController = new FindVeterinarioByIdController(findVeterinarioById);
 const findVeterinarioByEmailController = new FindVeterinarioByEmailController(findVeterinarioByEmail);
-const deleteVeterinarioByIdController = new DeleteVeterinarioByIdController(deleteVeterinarioById );
-const updateVeterinarioController = new UpdateVeterinarioController(mysqlUserRepository);
-
+const deleteVeterinarioByIdController = new DeleteVeterinarioByIdController(deleteVeterinarioById);
+const updateVeterinarioController = new UpdateVeterinarioController(updateVeterinario);
 
 export {
   mysqlUserRepository,
-    findAllVeterinarioController,
-    findVeterinarioByIdController,
-    findVeterinarioByEmailController,
-    deleteVeterinarioByIdController,
-    updateVeterinarioController,
-  };
+  findAllVeterinarioController,
+  findVeterinarioByIdController,
+  findVeterinarioByEmailController,
+  deleteVeterinarioByIdController,
+  updateVeterinarioController,
+};
