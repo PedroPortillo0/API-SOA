@@ -38,13 +38,43 @@ const registerUserController = new RegisterUserController(registerVeterinario);
 const loginUserController = new LoginVeterinarioController(loginVeterinario);
 
 // Inicialización de consumidores
-const initializeConsumers = async () => {
-    const channel = await createRabbitMQChannel();
+const initializeConsumers = async (retries = 5, delay = 1000) => {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        // Crear el canal de RabbitMQ
+        const channel = await createRabbitMQChannel();
   
-    const veterinarioVerifiedConsumer = new VeterinarioVerifiedConsumer(channel, verifyVeterinario);
+        // Instanciar el consumidor
+        const veterinarioVerifiedConsumer = new VeterinarioVerifiedConsumer(
+          channel,
+          verifyVeterinario
+        );
   
-    await veterinarioVerifiedConsumer.consume();
-};
+        // Iniciar el consumo de mensajes
+        await veterinarioVerifiedConsumer.consume();
+  
+        console.log("RabbitMQ VeterinarioVerifiedConsumer initialized successfully ✅");
+        return; // Salir si la inicialización es exitosa
+      } catch (error) {
+        console.error(
+          `Error initializing VeterinarioVerifiedConsumer (attempt ${attempt}/${retries}): ❗`,
+          error
+        );
+  
+        // Si no es el último intento, esperar antes de reintentar
+        if (attempt < retries) {
+          console.log(`Reintentando en ${delay / 1000} segundos... ⏳`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+      }
+    }
+  
+    // Si todos los intentos fallan, mostrar un error crítico y salir
+    console.error(
+      "No se pudo inicializar VeterinarioVerifiedConsumer después de múltiples intentos. ❌"
+    );
+    process.exit(1);
+  };
 
 // Exportaciones
 export {
