@@ -9,7 +9,7 @@ import { UpdateVeterinario } from "../Application/use-case/UpdateVeterinario";
 import { FindAllVeterinarioController } from "./Controllers/FindAllVeterinarioController"; 
 import { FindVeterinarioByIdController } from "./Controllers/FindVeterinarioByIdController"; 
 import { FindVeterinarioByEmailController } from "./Controllers/FindVeterinarioByEmailController"; 
-import { DeleteVeterinarioByIdController } from "./Controllers/DeleteVeterinarioController"; 
+import { DeleteVeterinarioByIdController } from "./Controllers/DeteleVeterinarioController";
 import { UpdateVeterinarioController } from "./Controllers/UpdateVeterinarioController"; 
 
 import { MysqlUserRepository } from "./Persistence/MysqlVeterinarioRepository";
@@ -26,7 +26,7 @@ const findAllVeterinarioController = new FindAllVeterinarioController(findAllVet
 const findVeterinarioByIdController = new FindVeterinarioByIdController(findVeterinarioById);
 const findVeterinarioByEmailController = new FindVeterinarioByEmailController(findVeterinarioByEmail);
 const deleteVeterinarioByIdController = new DeleteVeterinarioByIdController(deleteVeterinarioById);
-const updateVeterinarioController = new UpdateVeterinarioController(updateVeterinario);
+const updateVeterinarioController = new UpdateVeterinarioController(mysqlUserRepository);
 
 export {
   mysqlUserRepository,
